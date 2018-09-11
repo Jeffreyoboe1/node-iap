@@ -35,3 +35,31 @@ exports.verifyPayment = function (platform, payment, cb) {
 		cb(null, result);
 	});
 };
+
+exports.verifyPaymentTest = function (param) {
+	return console.log('verify Payment Test export', param);
+}
+
+exports.verifyPaymentPromise = function (platform, payment) {
+
+	return new Promise(function(resolve,reject) {
+		if (!payment) {
+			return reject("No payment given");
+		}
+		
+		var engine = platforms[platform];
+		if(!engine) {
+			return reject("Platform not recognized");
+		}
+
+		engine.verifyPayment(payment, function (error, result) {
+			if (error) {
+				return reject(error);
+			}
+			result.platform = platform;
+			return resolve(result);
+		});
+
+	})
+	
+};
