@@ -40,6 +40,8 @@ exports.verifyPaymentTest = function (param) {
 	return console.log('verify Payment Test export', param);
 }
 
+
+
 exports.verifyPaymentPromise = function (platform, payment) {
 
 	return new Promise(function(resolve,reject) {
@@ -63,3 +65,33 @@ exports.verifyPaymentPromise = function (platform, payment) {
 	})
 	
 };
+
+exports.cancelSubscriptionPromise = function (platform, payment) {
+
+	return new Promise(function(resolve, reject) {
+		if (!payment) {
+			return reject("No payment given");
+		}
+		
+		var engine = platforms[platform];
+		if(!engine) {
+			return reject("Platform not recognized");
+		}
+
+		engine.cancelSubscription(payment, function (error, result) {
+			if (error) {
+				return reject(error);
+			}
+			result.platform = platform;
+			return resolve(result);
+		});
+
+
+
+	})
+
+
+
+
+
+}
